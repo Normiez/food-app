@@ -21,6 +21,21 @@ class CompanyController {
     }
   }
 
+  static async findOneCompany(req, res, next) {
+    try {
+      const companyId = req.params.id;
+      const data = await Company.findOne({ where: { id: companyId } });
+      if (!data)
+        throw {
+          name: "INVALID ID",
+          message: "Company does not exist in database",
+        };
+      res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async updateCompany(req, res, next) {
     try {
       const { name } = req.body;
